@@ -1,5 +1,6 @@
 package damcaBitBoardTry;
 
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -102,8 +103,11 @@ public class GraphicPvEBoard extends AbstractGraphicBoard implements UnitAndMask
         @Override
         public void mousePressed(MouseEvent e) {
             System.out.println(LogicalBoard.turn);
+            move = null;
+
             if (LogicalBoard.turn == Turn.WhiteTurn) {
                 move = fatherBoard.playerMove(e.getX(), e.getY(), getWidth(), getHeight());
+
                 pcBoard.makeComputerMove(move);
             }
             repaint();
@@ -111,8 +115,9 @@ public class GraphicPvEBoard extends AbstractGraphicBoard implements UnitAndMask
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            System.out.println(LogicalBoard.turn);
 
+            fatherBoard.playerRelease();
+            System.out.println("TURN IS: " + LogicalBoard.turn);
             if (LogicalBoard.turn == Turn.BlackTurn) {
                 try {
                     Thread.sleep(700);
@@ -120,8 +125,9 @@ public class GraphicPvEBoard extends AbstractGraphicBoard implements UnitAndMask
                     // TODO Auto-generated catch block
                     ie.printStackTrace();
                 }
-                fatherBoard.makeMove(pcBoard.bestMove());
-                fatherBoard.changePlayersTurn();
+                move = pcBoard.bestMove();
+                fatherBoard.makeMove(move);
+
             }
             pcBoard.Win();
             fatherBoard.Win();

@@ -1,6 +1,5 @@
 package damcaBitBoardTry;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -461,19 +460,24 @@ public class LogicalBoard implements UnitAndMasksIE,TurnIE {
     }
 
     public void playerRelease() {
-        changePlayersTurn();
-    }
+        if (turn == Turn.WhiteTurn) {
+            this.prevPositions = this.positions;
 
+        } else {
+            this.prevPositions = new Point();
+            this.positions = new Point();
+        }
+    }
     // for pvp
     public Move playerMove(int pressx, int pressy, int w, int h) {
-
+        System.out.println("IN PLAYER MOVE");
 
         this.positions = findSquare(pressx, pressy, w, h);
         if (!isInMoves()) {
             this.killMovesMap.clear();
             this.moves = possibleMoves(this.positions.getY(), this.positions.getX());
             printKilledMap();
-        } else if (true) {
+        } else  {
             this.moves = new ArrayList<>();
             this.killedUnits = this.killMovesMap.get(this.positions);
             if (this.killedUnits != null)
@@ -487,6 +491,8 @@ public class LogicalBoard implements UnitAndMasksIE,TurnIE {
             makeKing();
             changePlayersTurn();
             Win();
+            System.out.println("RETURNING ");
+            System.out.println("OLD: " + this.prevPositions);
             return new Move(this.positions, this.prevPositions, this.killedUnits);
         }
         Win();

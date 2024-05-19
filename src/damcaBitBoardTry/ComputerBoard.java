@@ -41,7 +41,7 @@ public class ComputerBoard extends LogicalBoard {
 
 
     public Move bestMove() {
-        if (LogicalBoard.turn != Turn.BlackTurn){
+        if (LogicalBoard.turn != Turn.BlackTurn) {
 
             System.out.println("RETURNING NULL");
             return null;
@@ -57,6 +57,7 @@ public class ComputerBoard extends LogicalBoard {
             for (int j = 1 - (i & 1); j < 8; j += 2) {
                 if (getCell(i, j) == Unit.Black || getCell(i, j) == Unit.BlackKing) {
                     this.moves = possibleMoves(i, j);
+                    System.out.println(this.moves + "123");
                     for (Point movePoint : this.moves) {
                         System.out.println(movePoint + "Move!");
                         move = new Move(movePoint, new Point(i, j),
@@ -113,7 +114,7 @@ public class ComputerBoard extends LogicalBoard {
     }
 
     public void makeComputerMove(Move move) {
-//		System.out.println(move);
+        System.out.println("FROM PC: " + move);
         if (move != null) {
             moveKing(move.oldPosition, move.newPosition);
             moveUnit(move.oldPosition, move.newPosition);
@@ -122,7 +123,6 @@ public class ComputerBoard extends LogicalBoard {
                 for (Point point : move.killedUnits) {
                     killUnit(point.getY(), point.getX());
                 }
-
         }
     }
 
@@ -142,6 +142,8 @@ public class ComputerBoard extends LogicalBoard {
     }
 
     public void turnEnding(Move move) {
+
+        System.out.println("TURN ENDING");
         makeComputerMove(move);
         this.pcTurn = LogicalBoard.turn;
         System.out.println(this.pcTurn);
@@ -152,8 +154,10 @@ public class ComputerBoard extends LogicalBoard {
         if (isKing(i, j)) {
             System.out.println("king!" + i + " " + j);
             moves = possibleComputerKingMoves(i, j, this.pcUnit);
-        } else
+        } else {
+            System.out.println("IN POS MOV");
             moves = possibleComputerMoves(i, j, this.pcUnit);
+        }
         return moves;
     }
 
@@ -187,8 +191,8 @@ public class ComputerBoard extends LogicalBoard {
 
     public ArrayList<Point> possibleComputerMoves(int posY, int posX, Unit unit) {
         if (unit == Unit.Black)
-            return possibleMovesTemplate(posY, posX, -1, unit);
-        return possibleMovesTemplate(posY, posX, +1, unit);
+            return possibleMovesTemplate(posY, posX, +1, unit);
+        return possibleMovesTemplate(posY, posX, -1, unit);
 
     }
 
